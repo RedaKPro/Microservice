@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringCloudApplication
 @RestController
-//@EnableCircuitBreaker
+@EnableCircuitBreaker
 public class FrontWebserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FrontWebserviceApplication.class, args);
@@ -23,24 +23,14 @@ public class FrontWebserviceApplication {
 
 	@HystrixCommand(fallbackMethod = "defaultMessage")
 	@GetMapping(value="/hello")
-	public String hello() {
-		return "Salut 1 !";
+	public String hello() throws Exception {
+		throw new Exception();
+		//return "Salut 1 !";
 	}
 	public String defaultMessage() {
 		return "Salut 2 !";
 	}
 
-	@RestController
-	public class Microservice3 {
-			@Autowired
-			private LoadBalancerClient loadBalancer;
-
-			@GetMapping(value = "/test")
-			public void method() {
-				ServiceInstance serviceInstance = loadBalancer.choose("webservice");
-				System.out.println(serviceInstance.getUri());
-			}
-		}
 
 
 	}
